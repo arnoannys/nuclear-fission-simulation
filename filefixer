@@ -1,0 +1,42 @@
+#! /bin/bash
+
+rm -r ./crosssections
+mkdir ./crosssections   
+cp ./CrossSections.zip ./crosssections/CrossSections.zip                                         
+
+cd ./crosssections
+
+unzip -qq ./CrossSections.zip   
+rm -r ./CrossSections.zip 
+
+
+
+for filename in  ./*; do   
+sed -i '1,2d' $filename
+done
+
+for filename in  ./*; do   
+var=${filename##*/}                                  #doet ./ weg (path)
+energies=ENER_$var
+crosssec=CROS_$var
+
+sed -i 's/-/e-/g'  $var
+ sed -i 's/+/e+/g'  $var
+
+	while read line; do
+		set $line
+		echo $1 >> $energies
+		echo $3 >> $energies
+		echo $5 >> $energies
+	done <$var
+
+	while read line; do
+		set $line
+		echo $2 >> $crosssec
+		echo $4 >> $crosssec
+		echo $6 >> $crosssec
+	done <$var
+
+done
+
+

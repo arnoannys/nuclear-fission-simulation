@@ -1,0 +1,7 @@
+#! /bin/bash
+
+sh filefixer
+make all
+./main2
+
+echo main 2 done 
